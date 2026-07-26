@@ -1,50 +1,271 @@
-body, html {
+:root {
+    --bg-color: #05070d;
+    --text-main: #f5f7ff;
+    --text-muted: #c7ccdc;
+    --panel-bg: rgba(5, 7, 13, 0.62);
+    --panel-border: rgba(255, 255, 255, 0.18);
+    --accent: #f3a24f;
+    --chapter-card-bg: rgba(2, 4, 10, 0.68);
+    --timeline-track: rgba(255, 255, 255, 0.2);
+    --timeline-progress: linear-gradient(180deg, #84a9ff, #f3a24f, #8f96ab);
+    --chapter-progress: 0;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
     margin: 0;
     padding: 0;
+    min-height: 100%;
     overflow-x: hidden;
-    font-family: Arial, sans-serif;
-    background-color: #000;
-    color: #fff;
+    font-family: "Inter", "Segoe UI", Arial, sans-serif;
+    background: var(--bg-color);
+    color: var(--text-main);
 }
 
-.container {
-    position: relative;
-    width: 100%;
-    height: 300vh; /* Three full screen sections */
+body.reduced-motion * {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
 }
 
-.scene {
+#three-container {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.visual-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background:
+        radial-gradient(circle at 20% 15%, rgba(255, 180, 80, 0.08), transparent 35%),
+        radial-gradient(circle at 80% 70%, rgba(122, 160, 255, 0.1), transparent 38%),
+        linear-gradient(180deg, rgba(3, 5, 10, 0.25), rgba(3, 5, 10, 0.82));
+}
+
+.chapters {
     position: relative;
-    height: 100vh;
-    width: 100%;
+    z-index: 2;
+}
+
+.chapter {
+    min-height: 120vh;
     display: flex;
-    align-items: center;
     justify-content: center;
-    background-color: #111;
-    transition: transform 1s ease-in-out;
+    padding: 10vh min(8vw, 64px) 12vh;
 }
 
-#scene-1 { background: url('scene1.jpg') no-repeat center center/cover; }
-#scene-2 { background: url('scene2.jpg') no-repeat center center/cover; }
-#scene-3 { background: url('scene3.jpg') no-repeat center center/cover; }
-
-.content {
-    text-align: center;
-    transform: translateY(100%);
-    opacity: 0;
-    transition: transform 1s ease, opacity 1s ease;
+.chapter-card {
+    position: sticky;
+    top: 16vh;
+    width: min(720px, 100%);
+    padding: clamp(1.1rem, 2.2vw, 2rem);
+    border: 1px solid var(--panel-border);
+    border-radius: 16px;
+    background: var(--chapter-card-bg);
+    backdrop-filter: blur(7px);
+    transform: translateY(calc((1 - var(--chapter-progress)) * 32px));
+    opacity: calc(0.25 + (var(--chapter-progress) * 0.9));
+    transition: transform 320ms ease, opacity 320ms ease, border-color 320ms ease;
 }
 
-.content h1 {
-    font-size: 3em;
-    margin-bottom: 0.5em;
+.chapter.is-active .chapter-card {
+    border-color: rgba(243, 162, 79, 0.55);
 }
 
-.content p {
-    font-size: 1.5em;
+.chapter-intro .chapter-card,
+.chapter-outro .chapter-card {
+    background: rgba(4, 6, 14, 0.78);
 }
 
-.scene.active .content {
-    transform: translateY(0);
-    opacity: 1;
+.chapter-meta {
+    margin: 0 0 0.7rem;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+h1,
+h2 {
+    margin: 0 0 1rem;
+    line-height: 1.2;
+    font-weight: 600;
+    text-wrap: balance;
+}
+
+h1 {
+    font-size: clamp(1.8rem, 4.5vw, 3.1rem);
+}
+
+h2 {
+    font-size: clamp(1.45rem, 3.7vw, 2.4rem);
+}
+
+p {
+    margin: 0;
+    line-height: 1.6;
+    font-size: clamp(1rem, 2vw, 1.22rem);
+    max-width: 62ch;
+    color: var(--text-main);
+}
+
+.ui-panel {
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    z-index: 5;
+    display: grid;
+    gap: 0.6rem;
+}
+
+.control-btn {
+    border: 1px solid var(--panel-border);
+    border-radius: 999px;
+    padding: 0.6rem 0.95rem;
+    color: var(--text-main);
+    background: var(--panel-bg);
+    font-size: 0.82rem;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+}
+
+.control-btn[aria-pressed="true"] {
+    border-color: rgba(243, 162, 79, 0.7);
+    color: #ffd9af;
+}
+
+.timeline {
+    position: fixed;
+    right: clamp(0.5rem, 2.5vw, 1.5rem);
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 5;
+    display: grid;
+    grid-template-columns: auto auto;
+    align-items: center;
+    gap: 0.7rem;
+}
+
+.timeline-track {
+    width: 4px;
+    height: min(58vh, 520px);
+    border-radius: 999px;
+    background: var(--timeline-track);
+    overflow: hidden;
+}
+
+.timeline-progress {
+    width: 100%;
+    height: 0%;
+    background: var(--timeline-progress);
+    border-radius: inherit;
+}
+
+.timeline-dots {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.7rem;
+}
+
+.timeline-dots li {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    background: rgba(255, 255, 255, 0.2);
+    transition: transform 260ms ease, background-color 260ms ease, border-color 260ms ease;
+}
+
+.timeline-dots li.is-active {
+    transform: scale(1.4);
+    background: var(--accent);
+    border-color: #ffd6ab;
+}
+
+.fallback {
+    position: fixed;
+    left: 50%;
+    bottom: 1rem;
+    transform: translateX(-50%);
+    z-index: 6;
+    margin: 0;
+    padding: 0.6rem 0.9rem;
+    border-radius: 12px;
+    background: rgba(6, 8, 13, 0.88);
+    border: 1px solid var(--panel-border);
+    color: #ffe4c8;
+    display: none;
+}
+
+.fallback.visible,
+.noscript-message {
+    display: block;
+}
+
+@media (max-width: 920px) {
+    .chapter {
+        min-height: 110vh;
+        padding-inline: 1rem;
+    }
+
+    .chapter-card {
+        top: 12vh;
+    }
+
+    .timeline {
+        right: 0.4rem;
+        gap: 0.4rem;
+    }
+
+    .timeline-dots {
+        gap: 0.5rem;
+    }
+
+    .timeline-track {
+        height: 45vh;
+    }
+}
+
+@media (max-width: 660px) {
+    .ui-panel {
+        left: 50%;
+        top: auto;
+        bottom: 0.7rem;
+        transform: translateX(-50%);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        width: min(95vw, 520px);
+    }
+
+    .control-btn {
+        width: 100%;
+        font-size: 0.77rem;
+    }
+
+    .timeline {
+        display: none;
+    }
+
+    .chapter-card {
+        top: 10vh;
+        padding: 1rem;
+    }
+
+    p {
+        line-height: 1.5;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html:focus-within {
+        scroll-behavior: auto;
+    }
 }
