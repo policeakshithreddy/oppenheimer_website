@@ -3,31 +3,99 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>J. Robert Oppenheimer</title>
+    <title>Oppenheimer: A Scroll Story</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <section class="scene" id="scene-1">
-            <div class="content">
-                <h1>The Early Life of J. Robert Oppenheimer</h1>
-                <p>Born in 1904, J. Robert Oppenheimer was a brilliant physicist...</p>
+    <div id="three-container" aria-hidden="true"></div>
+    <div class="visual-overlay" aria-hidden="true"></div>
+
+    <aside class="ui-panel" aria-label="Story controls">
+        <button id="reduced-motion-toggle" class="control-btn" type="button" aria-pressed="false">Reduced Motion: Off</button>
+        <button id="audio-toggle" class="control-btn" type="button" aria-pressed="false">Audio Cues: Off</button>
+    </aside>
+
+    <aside class="timeline" aria-label="Timeline progress">
+        <div class="timeline-track">
+            <div class="timeline-progress" id="timeline-progress"></div>
+        </div>
+        <ol class="timeline-dots" id="timeline-dots"></ol>
+    </aside>
+
+    <main class="chapters" id="chapters">
+        <section class="chapter chapter-intro" id="chapter-0" data-title="Prologue" data-date="1945" data-mood="Foreboding">
+            <div class="chapter-card">
+                <p class="chapter-meta">1945 · Foreboding</p>
+                <h1>Before the fire, there was only a question.</h1>
+                <p>A quiet room. A brilliant mind. A century waiting for ignition.</p>
             </div>
         </section>
-        <section class="scene" id="scene-2">
-            <div class="content">
-                <h1>The Manhattan Project</h1>
-                <p>Oppenheimer led the Los Alamos Laboratory...</p>
+
+        <section class="chapter" id="chapter-1" data-title="Early Life" data-date="1904-1925" data-mood="Curious">
+            <div class="chapter-card">
+                <p class="chapter-meta">1904–1925 · Curious</p>
+                <h2>He learned to see structure in the invisible.</h2>
+                <p>From New York classrooms to European laboratories, theory became his language.</p>
             </div>
         </section>
-        <section class="scene" id="scene-3">
-            <div class="content">
-                <h1>The Aftermath</h1>
-                <p>After the war, Oppenheimer became a chief advisor...</p>
+
+        <section class="chapter" id="chapter-2" data-title="Theoretical Work" data-date="1926-1941" data-mood="Electric">
+            <div class="chapter-card">
+                <p class="chapter-meta">1926–1941 · Electric</p>
+                <h2>Equations bent toward consequences.</h2>
+                <p>Quantum ideas sharpened, and physics moved from thought to possibility.</p>
             </div>
         </section>
-    </div>
-    <script src="script.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+        <section class="chapter" id="chapter-3" data-title="Los Alamos" data-date="1942-1944" data-mood="Urgent">
+            <div class="chapter-card">
+                <p class="chapter-meta">1942–1944 · Urgent</p>
+                <h2>In the desert, a city of secrecy rose overnight.</h2>
+                <p>Scientists, soldiers, and pressure fused into one relentless machine.</p>
+            </div>
+        </section>
+
+        <section class="chapter" id="chapter-4" data-title="Trinity Test" data-date="July 16, 1945" data-mood="Blinding">
+            <div class="chapter-card">
+                <p class="chapter-meta">July 16, 1945 · Blinding</p>
+                <h2>Night became day in a single pulse.</h2>
+                <p>The first detonation proved the design and changed the scale of power forever.</p>
+            </div>
+        </section>
+
+        <section class="chapter" id="chapter-5" data-title="Aftermath" data-date="1945" data-mood="Heavy">
+            <div class="chapter-card">
+                <p class="chapter-meta">1945 · Heavy</p>
+                <h2>Victory arrived with a shadow.</h2>
+                <p>Hiroshima and Nagasaki made the human cost impossible to ignore.</p>
+            </div>
+        </section>
+
+        <section class="chapter" id="chapter-6" data-title="Security Hearing" data-date="1954" data-mood="Fractured">
+            <div class="chapter-card">
+                <p class="chapter-meta">1954 · Fractured</p>
+                <h2>The architect stood trial in public memory.</h2>
+                <p>His clearance was stripped, and science met politics in plain sight.</p>
+            </div>
+        </section>
+
+        <section class="chapter chapter-outro" id="chapter-7" data-title="Legacy" data-date="1967+" data-mood="Reflective">
+            <div class="chapter-card">
+                <p class="chapter-meta">1967+ · Reflective</p>
+                <h2>His story still asks what knowledge is for.</h2>
+                <p>We inherit both the brilliance and the burden.</p>
+            </div>
+        </section>
+    </main>
+
+    <p id="webgl-fallback" class="fallback" role="status">
+        3D visuals are unavailable on this device/browser. You can still follow the full story below.
+    </p>
+
+    <noscript>
+        <p class="fallback noscript-message">JavaScript is required for the interactive timeline. The textual story remains available.</p>
+    </noscript>
+
+    <script type="module" src="script.js"></script>
 </body>
 </html>
